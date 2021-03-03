@@ -40,13 +40,11 @@ void l_insere(lista* l, lista_item item) {
 void l_retira(lista* l, lista_item item) {
 	/* Procura a primeira ocorrencia do item passado utilizando um iterador, a partir dele, itera e retira todos os valores
 	   iguais ao modificar os proximos e anteriores dos elementos, e libera a memória alocada */
-	if(!l_vazia(l))
-	{
+	if(!l_vazia(l)) {
 		lista_iterador it = l_procuraPrimeiro(l, item);
 		if (l_acabou(it))
 			return;
-		while(!l_acabou(it) && l->compara(l_elemento(it), item) == 0)
-		{
+		while(!l_acabou(it) && l->compara(l_elemento(it), item) == 0) {
 			lista_no *n = it.p;
 			l_proximo(&it);
 			n->ant->prox = n->prox;
@@ -69,6 +67,7 @@ lista_iterador l_ultimo(lista* l) {
 	it.p = l->sentinela->ant;
 	return it;
 }
+
 lista_item l_elemento(lista_iterador i) {
 	return i.p->item;
 }
@@ -106,8 +105,7 @@ lista_iterador l_procuraTeto(lista* l, lista_item item) {
 	   retorna o iterador. */
 	l->sentinela->item = item;
 	lista_iterador it = l_primeiro(l);
-	while ( l->compara(l_elemento(it), item) == -1 )
-	{
+	while ( l->compara(l_elemento(it), item) == -1 ) {
 		l_proximo(&it);
 	}
 	return it;
