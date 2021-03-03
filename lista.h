@@ -43,14 +43,17 @@ typedef struct lista_iterador_struct lista_iterador;
  * 			1, caso i1>i2.
  *  
  */
-void inicializa( lista* l, int (*cmp)( lista_item i1, lista_item i2));
+void l_inicializa( lista* l, int (*cmp)( lista_item i1, lista_item i2));
+
+//checa se a lista foi inicializada
+int l_inicializada(lista* l);
 
 /*! Desaloca uma lista. Ultimo procedimento a ser chamado.
  * 
  * \param l Endereco da lista a ser desalocada
  *  
  */
-void destroi(lista* l);
+void l_destroi(lista* l);
 
 /*!
  * Verifica se uma lista esta ou nao vazia.
@@ -59,7 +62,7 @@ void destroi(lista* l);
  * \return Verdadeiro (diferente de zero) se a lista estiver vazia
  * 
  */
-int vazia(lista* l);
+int l_vazia(lista* l);
 
 /*! Insere um determinado elemento na lista ordenada. O novo elemento será inserido antes dos elementos maiores ou iguais.
  * 
@@ -67,7 +70,7 @@ int vazia(lista* l);
  * \param item Elemento a ser inserido
  *  
  */
-void insere(lista* l, lista_item item);
+void l_insere(lista* l, lista_item item);
 
 /*! Remove todas as ocorrencias de um determinado elemento na lista ordenada, se existirem.
  * 
@@ -75,7 +78,7 @@ void insere(lista* l, lista_item item);
  * \param item Elemento a ser removido
  *  
  */
-void retira(lista* l, lista_item item);
+void l_retira(lista* l, lista_item item);
 
 /*!
  * Retorna um iterador para o elemento do inicio da lista, se houver.
@@ -84,7 +87,7 @@ void retira(lista* l, lista_item item);
  * \return Iterador para o menor elemento da lista, se houver
  * 
  */
-lista_iterador primeiro(lista* l);
+lista_iterador l_primeiro(lista* l);
 
 /*!
  * Retorna um iterador para o elemento do final da lista, se houver.
@@ -93,7 +96,7 @@ lista_iterador primeiro(lista* l);
  * \return Iterador para o maior elemento da lista, se houver
  * 
  */
-lista_iterador ultimo(lista* l);
+lista_iterador l_ultimo(lista* l);
 
 /*!
  * Retorna o elemento referenciado pelo iterador, se houver
@@ -102,7 +105,7 @@ lista_iterador ultimo(lista* l);
  * \return Elemento da lista, se houver
  * 
  */
-lista_item elemento(lista_iterador i);
+lista_item l_elemento(lista_iterador i);
 
 /*!
  * Avanca o iterador e retorna verdadeiro caso nao seja o final da lista
@@ -111,7 +114,7 @@ lista_item elemento(lista_iterador i);
  * \return Falso caso nao tenha um proximo elemento
  * 
  */
-int proximo(lista_iterador* i);
+int l_proximo(lista_iterador* i);
 
 /*!
  * Retrocede o iterador e retorna verdadeiro caso nao seja o inicio da lista
@@ -120,7 +123,7 @@ int proximo(lista_iterador* i);
  * \return Falso caso nao tenha um elemento anterior
  * 
  */
-int anterior(lista_iterador* i);
+int l_anterior(lista_iterador* i);
 
 /*!
  * Retorna se o elemento referenciado pelo iterador existe
@@ -129,7 +132,7 @@ int anterior(lista_iterador* i);
  * \return Falso caso o iterador nao aponte para um elemento
  * 
  */
-int acabou(lista_iterador i);
+int l_acabou(lista_iterador i);
 
 /*!
  * Procura por um determinado elemento e retorna um iterador para a
@@ -140,7 +143,7 @@ int acabou(lista_iterador i);
  * \return Iterador para a primeira ocorrencia, se existir. Caso não encontre, o iterador terá acabou() verdadeiro.
  * 
  */
-lista_iterador procuraPrimeiro(lista* l, lista_item item);
+lista_iterador l_procuraPrimeiro(lista* l, lista_item item);
 
 /*!
  * Procura pelo teto de um determinado elemento e retorna um iterador para a
@@ -153,7 +156,7 @@ lista_iterador procuraPrimeiro(lista* l, lista_item item);
  * 		    o iterador terá acabou() verdadeiro.
  * 
  */
-lista_iterador procuraTeto(lista* l, lista_item item);
+lista_iterador l_procuraTeto(lista* l, lista_item item);
 
 /*!
  * Procura pelo piso de um determinado elemento e retorna um iterador para a
@@ -166,7 +169,7 @@ lista_iterador procuraTeto(lista* l, lista_item item);
  * 		    o iterador terá acabou() verdadeiro.
  * 
  */
-lista_iterador procuraPiso(lista* l, lista_item item);
+lista_iterador l_procuraPiso(lista* l, lista_item item);
 
 #endif
 
