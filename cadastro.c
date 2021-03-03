@@ -141,19 +141,137 @@ void cadastrar(lista *alunos) {
     }
 
     l_insere(alunos, aux);
+
+    printf("Aluno cadastrado\n");
 }
+
 void alterar(lista *alunos) {
-    printf("alterar\n");
+    lista_iterador it;
+    struct aluno aux;
+
+    printf("Insira os dados do aluno.\n");
+    printf("RA: ");
+    if ( (aux.RA = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("RA: ");
+        if ( (aux.RA = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        }
+    }
+
+    it = l_procuraPrimeiro(alunos, aux);
+    if (l_acabou(it)) {
+        printf("Aluno ainda não cadastrado\n");
+        return;
+    }
+
+    printf("Aluno encontrado.\n");
+
+    printf("nome: ");
+    scanf(" %100[^\n]", aux.nome);
+    
+    printf("Ano de ingresso: ");
+    if ( (aux.anoIngresso = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("Ano de ingresso: ");
+        if ( (aux.anoIngresso = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        } 
+    }
+
+    printf("Quantidade de créditos cursados: ");
+    if ( (aux.credCursados = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("Quantidade de créditos cursados: ");
+        if ( (aux.credCursados = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        } 
+    }
+
+    l_retira(alunos, aux);
+    l_insere(alunos, aux);
+
+    printf("Dados alterados.\n");
 }
+
 void remover(lista *alunos) {
-    printf("remover\n");
+    lista_iterador it;
+    struct aluno aux;
+
+    printf("Insira os dados do aluno.\n");
+    printf("RA: ");
+    if ( (aux.RA = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("RA: ");
+        if ( (aux.RA = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        }
+    }
+
+    it = l_procuraPrimeiro(alunos, aux);
+    if (l_acabou(it)) {
+        printf("\nAluno ainda não cadastrado\n\n");
+        return;
+    }
+
+    printf("Aluno encontrado\n");
+
+    l_retira(alunos, aux);
+
+    printf("Registro removido.\n");
 }
+
 void buscar(lista *alunos) {
-    printf("buscar\n");
+    lista_iterador it;
+    struct aluno aux;
+
+    printf("Insira os dados do aluno.\n");
+    printf("RA: ");
+    if ( (aux.RA = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("RA: ");
+        if ( (aux.RA = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        }
+    }
+
+    it = l_procuraPrimeiro(alunos, aux);
+    if (l_acabou(it)) {
+        printf("\nAluno ainda não cadastrado\n\n");
+        return;
+    }
+
+    aux = l_elemento(it);
+
+    printf("\nAluno encontrado\n\n");
+    printf("Dados do aluno:\n");
+    printf("RA: %d\n", aux.RA);
+    printf("Nome: %s\n", aux.nome);
+    printf("Ano de ingresso: %d\n", aux.anoIngresso);
+    printf("Quantidade de créditos cursados: %d\n\n", aux.credCursados);
+    
 }
+
 void listar(lista *alunos) {
-    printf("listar\n");
+    lista_iterador it;
+    struct aluno aux;
+
+    it = l_primeiro(alunos);
+    while (!l_acabou(it)) {
+        aux = l_elemento(it);
+        printf("\nRA: %d\n", aux.RA);
+        printf("Nome: %s\n", aux.nome);
+        printf("Ano de ingresso: %d\n", aux.anoIngresso);
+        printf("Quantidade de créditos cursados: %d\n\n", aux.credCursados);
+        l_proximo(&it);
+    }
 }
+
 void sair(FILE *cad, lista *alunos) {
     printf("sair\n");
 }
