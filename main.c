@@ -22,12 +22,12 @@ int main(int argc, char *argv[]) {
 
     if (argc == 2) {
         l_inicializa(&alunos, compare);
-        if (inicializar(cad, argv[1], &alunos) == 1) {
-            menu(cad, &alunos);
+        if (inicializar(&cad, argv[1], &alunos) == 1) {
+            menu(&cad, &alunos);
         }
     }
     else {
-        printf("chamada incorreta do programa\n");
+        printf("chamada incorreta do programa, utilize \"./ex07 Alunos.dat\"\n");
     }
 
     if (cad != NULL) {

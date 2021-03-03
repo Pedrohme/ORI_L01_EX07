@@ -6,12 +6,12 @@
 #include "lista.h"
 #include "cadastro.h"
 
-int inicializar(FILE *cad, char nome[], lista *alunos) {
+int inicializar(FILE **cad, char nome[], lista *alunos) {
     if (strcmp(nome, "Alunos.dat")) {
         printf("nome do arquivo não aceito, espera-se \"Alunos.dat\"\n");
         return 0;
     }
-    else if ( (cad = fopen(nome, "r+")) == NULL ) {
+    else if ( (*cad = fopen(nome, "r+")) == NULL ) {
         printf("Arquivo inexistente ou impossível de ser aberto, deseja criar um novo arquivo de cadastros?\nS/N : ");
         char input = 'a';
         while (1) {
@@ -29,10 +29,10 @@ int inicializar(FILE *cad, char nome[], lista *alunos) {
             return 0;
         }
         else {
-            cad = fopen(nome, "w+");
+            *cad = fopen(nome, "w+");
         }
     }
-    if (cad != NULL) {
+    if (*cad != NULL) {
         return arqParaMem(cad, alunos);
     }
     else {
@@ -41,13 +41,13 @@ int inicializar(FILE *cad, char nome[], lista *alunos) {
     }
 }
 
-int arqParaMem(FILE *cad, lista *alunos) {
+int arqParaMem(FILE **cad, lista *alunos) {
     int retScan = 0;
     struct aluno al;
-    while ( (retScan = (fscanf(cad, "%d@%100[^@]@%d@%d", &al.RA, al.nome, &al.anoIngresso, &al.credCursados))) == 4) {
+    while ( (retScan = (fscanf(*cad, "%d@%100[^@]@%d@%d", &al.RA, al.nome, &al.anoIngresso, &al.credCursados))) == 4) {
         l_insere(alunos, al);
     }
-    if (feof(cad) && retScan == -1) {
+    if (feof(*cad) && retScan == -1) {
         printf("Arquivo lido com sucesso!\n");
         return 1;
     }
@@ -57,7 +57,7 @@ int arqParaMem(FILE *cad, lista *alunos) {
     }
 }
 
-void menu(FILE *cad, lista *alunos) {
+void menu(FILE **cad, lista *alunos) {
     int input = 0;
     while (input != 6) {
         printf("\nMENU\n");
@@ -65,7 +65,7 @@ void menu(FILE *cad, lista *alunos) {
         printf("2. Alterar\n");
         printf("3. Remover\n");
         printf("4. Buscar\n");
-        printf("5. listar\n");
+        printf("5. Listar\n");
         printf("6. Sair\n");
         scanf(" %d", &input);
         printf("\n");
@@ -142,7 +142,7 @@ void cadastrar(lista *alunos) {
 
     l_insere(alunos, aux);
 
-    printf("Aluno cadastrado\n");
+    printf("\nAluno cadastrado\n");
 }
 
 void alterar(lista *alunos) {
@@ -194,7 +194,7 @@ void alterar(lista *alunos) {
     l_retira(alunos, aux);
     l_insere(alunos, aux);
 
-    printf("Dados alterados.\n");
+    printf("\nDados alterados.\n");
 }
 
 void remover(lista *alunos) {
@@ -218,11 +218,11 @@ void remover(lista *alunos) {
         return;
     }
 
-    printf("Aluno encontrado\n");
+    printf("\nAluno encontrado\n");
 
     l_retira(alunos, aux);
 
-    printf("Registro removido.\n");
+    printf("\nRegistro removido.\n");
 }
 
 void buscar(lista *alunos) {
@@ -249,12 +249,13 @@ void buscar(lista *alunos) {
     aux = l_elemento(it);
 
     printf("\nAluno encontrado\n\n");
+    printf("----------------------------------\n");
     printf("Dados do aluno:\n");
     printf("RA: %d\n", aux.RA);
     printf("Nome: %s\n", aux.nome);
     printf("Ano de ingresso: %d\n", aux.anoIngresso);
     printf("Quantidade de créditos cursados: %d\n\n", aux.credCursados);
-    
+    printf("----------------------------------\n");
 }
 
 void listar(lista *alunos) {
@@ -262,18 +263,41 @@ void listar(lista *alunos) {
     struct aluno aux;
 
     it = l_primeiro(alunos);
-    while (!l_acabou(it)) {
-        aux = l_elemento(it);
-        printf("\nRA: %d\n", aux.RA);
-        printf("Nome: %s\n", aux.nome);
-        printf("Ano de ingresso: %d\n", aux.anoIngresso);
-        printf("Quantidade de créditos cursados: %d\n\n", aux.credCursados);
-        l_proximo(&it);
+    if (l_acabou(it))
+        printf("Nenhum aluno cadastrado.\n");
+    else {
+        printf("----------------------------------\n");
+        while (!l_acabou(it)) {
+            aux = l_elemento(it);
+            printf("RA: %d\n", aux.RA);
+            printf("Nome: %s\n", aux.nome);
+            printf("Ano de ingresso: %d\n", aux.anoIngresso);
+            printf("Quantidade de créditos cursados: %d\n\n", aux.credCursados);
+            printf("----------------------------------\n");
+            l_proximo(&it);
+        }
     }
 }
 
-void sair(FILE *cad, lista *alunos) {
-    printf("sair\n");
+void sair(FILE **cad, lista *alunos) {
+    lista_iterador it;
+    struct aluno aux;
+
+    *cad = freopen(NULL, "w", *cad);
+
+    if (*cad == NULL) {
+        printf("Erro, mudanças não foram salvas\n");
+        return;
+    }
+
+    it = l_primeiro(alunos);
+    while (!l_acabou(it)) {
+        aux = l_elemento(it);
+        fprintf(*cad, "%d@%s@%d@%d\n", aux.RA, aux.nome, aux.anoIngresso, aux.credCursados);
+        l_proximo(&it);
+    }
+
+    printf("Registro de alunos salvo!\n");
 }
 
 int intInput() {
