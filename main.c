@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
     lista alunos;
 
     if (argc == 2) {
-        inicializa(&alunos, compare);
+        l_inicializa(&alunos, compare);
         if (inicializar(cad, argv[1], &alunos) == 1) {
-            menu(cad);
+            menu(cad, &alunos);
         }
     }
     else {
@@ -33,8 +33,9 @@ int main(int argc, char *argv[]) {
     if (cad != NULL) {
         fclose(cad);
     }
-
-    destroi(&alunos);
+    if (l_inicializada(&alunos)) {
+        l_destroi(&alunos);
+    }
 
     return 0;
 }

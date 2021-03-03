@@ -45,7 +45,7 @@ int arqParaMem(FILE *cad, lista *alunos) {
     int retScan = 0;
     struct aluno al;
     while ( (retScan = (fscanf(cad, "%d@%100[^@]@%d@%d", &al.RA, al.nome, &al.anoIngresso, &al.credCursados))) == 4) {
-        insere(alunos, al);
+        l_insere(alunos, al);
     }
     if (feof(cad) && retScan == -1) {
         printf("Arquivo lido com sucesso!\n");
@@ -57,7 +57,7 @@ int arqParaMem(FILE *cad, lista *alunos) {
     }
 }
 
-void menu(FILE *cad) {
+void menu(FILE *cad, lista *alunos) {
     int input = 0;
     while (input != 6) {
         printf("\nMENU\n");
@@ -72,22 +72,22 @@ void menu(FILE *cad) {
 
         switch (input) {
         case 1:
-            cadastrar(cad);
+            cadastrar(alunos);
             break;
         case 2:
-            alterar(cad);
+            alterar(alunos);
             break;
         case 3:
-            remover(cad);
+            remover(alunos);
             break;
         case 4:
-            buscar(cad);
+            buscar(alunos);
             break;
         case 5:
-            listar(cad);
+            listar(alunos);
             break;
         case 6:
-            sair(cad);
+            sair(cad, alunos);
             break;
         default:
             printf("Opcao invalida\n");
@@ -96,21 +96,83 @@ void menu(FILE *cad) {
     }
 }
 
-void cadastrar(FILE *cad) {
-    printf("cadastrar\n");
+void cadastrar(lista *alunos) {
+    lista_iterador it;
+    struct aluno aux;
+
+    printf("Insira os dados do aluno.\n");
+    printf("RA: ");
+    if ( (aux.RA = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("RA: ");
+        if ( (aux.RA = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        }
+    }
+
+    it = l_procuraPrimeiro(alunos, aux);
+    if (!l_acabou(it)) {
+        printf("Aluno ja cadastrado\n");
+        return;
+    }
+
+    printf("nome: ");
+    scanf(" %100[^\n]", aux.nome);
+    
+    printf("Ano de ingresso: ");
+    if ( (aux.anoIngresso = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("Ano de ingresso: ");
+        if ( (aux.anoIngresso = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        } 
+    }
+
+    printf("Quantidade de créditos cursados: ");
+    if ( (aux.credCursados = intInput()) <= -1) {
+        printf("Valor inválido.\n");
+        printf("Quantidade de créditos cursados: ");
+        if ( (aux.credCursados = intInput()) <= -1) {
+            printf("Valor inválido. Voltando para o menu.\n");
+            return;
+        } 
+    }
+
+    l_insere(alunos, aux);
 }
-void alterar(FILE *cad) {
+void alterar(lista *alunos) {
     printf("alterar\n");
 }
-void remover(FILE *cad) {
+void remover(lista *alunos) {
     printf("remover\n");
 }
-void buscar(FILE *cad) {
+void buscar(lista *alunos) {
     printf("buscar\n");
 }
-void listar(FILE *cad) {
+void listar(lista *alunos) {
     printf("listar\n");
 }
-void sair(FILE *cad) {
+void sair(FILE *cad, lista *alunos) {
     printf("sair\n");
+}
+
+int intInput() {
+    char str[64];
+
+    scanf("%63s", str);
+
+    char *endptr;
+    int num = (int)strtol(str, &endptr, 10);
+
+    if (endptr == str) {
+        return -1;
+    }
+    else if (*endptr != '\0') {
+        return -1;
+    }
+    else {
+        return num;
+    }
 }
