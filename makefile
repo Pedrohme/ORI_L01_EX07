@@ -1,16 +1,27 @@
-all: ex07
+SRCDIR := src
+OBJDIR := obj
+BINDIR := bin
 
-ex07: lista.o cadastro.o main.o
-	gcc -o ex07 lista.o cadastro.o main.o
+BIN := $(BINDIR)/ex07
+SRC := $(wildcard $(SRCDIR)/*.c)
+OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-main.o: aluno.h lista.h cadastro.h
-	gcc -o main.o main.c -c
+CPPFLAGS := -Iinclude
+CFLAGS   := -Wall
 
-fila.o: fila.h fila.cadastro
-	gcc -o fila.o fila.c -c
+.PHONY: all
+all: $(BIN)
 
-cadastro.o: aluno.h lista.h cadastro.h 
-	gcc -o cadastro.o cadastro.c -c
+$(BIN): $(OBJ) | $(BINDIR)
+	$(CC) $^ -o $@
 
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(BINDIR) $(OBJDIR):
+	mkdir -p $@
+
+.PHONY: clean
 clean:
-	rm -f *.o ex07
+	@$(RM) -r $(BINDIR) $(OBJDIR)
+	@echo "Limpo!"

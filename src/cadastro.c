@@ -8,10 +8,14 @@
 
 int inicializar(FILE **cad, char nome[], lista *alunos) {
     if (strcmp(nome, "Alunos.dat")) {
-        printf("nome do arquivo não aceito, espera-se \"Alunos.dat\"\n");
-        return 0;
+        char *nomeCorte = strrchr(nome, '/');
+        nomeCorte = strtok(nomeCorte, "/");
+        if (strcmp(nomeCorte, "Alunos.dat")) {
+            printf("nome do arquivo não aceito, espera-se \"Alunos.dat\"\n");
+            return 0;
+        }
     }
-    else if ( (*cad = fopen(nome, "r+")) == NULL ) {
+    if ( (*cad = fopen(nome, "r+")) == NULL ) {
         printf("Arquivo inexistente ou impossível de ser aberto, deseja criar um novo arquivo de cadastros?\nS/N : ");
         char input = 'a';
         while (1) {

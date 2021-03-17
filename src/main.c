@@ -17,25 +17,21 @@ int compare(struct aluno a1, struct aluno a2) {
 }
 
 int main(int argc, char *argv[]) {
-    FILE *cad;
-    lista alunos;
-
     if (argc == 2) {
+        lista alunos;
         l_inicializa(&alunos, compare);
-        if (inicializar(&cad, argv[1], &alunos) == 1) {
-            menu(&cad, &alunos);
-        }
-    }
-    else {
-        printf("chamada incorreta do programa, utilize \"./ex07 Alunos.dat\"\n");
-    }
+        FILE *cad;
 
-    if (cad != NULL) {
-        fclose(cad);
+        if (inicializar(&cad, argv[1], &alunos) == 1)
+            menu(&cad, &alunos);
+
+        if (cad != NULL)
+            fclose(cad);
+        if (l_inicializada(&alunos))
+            l_destroi(&alunos);
     }
-    if (l_inicializada(&alunos)) {
-        l_destroi(&alunos);
-    }
+    else
+        printf("chamada incorreta do programa, utilize o arquivo \"Alunos.dat\" como argumento");
 
     return 0;
 }
