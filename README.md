@@ -10,10 +10,10 @@ UFSCar Sorocaba - 2021
 ## Compilação
 `$ make` -- o arquivo executável será compilado no diretório bin/  
     ou  
-`mkdir bin && cc -Iinclude -o bin/ex07 src/*.c`
+`$ mkdir bin && cc -Iinclude -o bin/ex07 src/*.c`
 
 ## Execução
-`bin/ex07 input/Alunos.dat`
+`$ bin/ex07 input/Alunos.dat`
 
 ## Limpeza
-`make clean`
+`$ make clean`
