@@ -1,5 +1,5 @@
 # ORI_L01_EX07
-Exercício 07 da Lista de exercícios 01 da matéria de Organização e Recuperação da Informação
+Exercício 07 da Lista de exercícios 01 da matéria de Organização e Recuperação da Informação  
 UFSCar Sorocaba - 2021
 
 
@@ -8,8 +8,8 @@ UFSCar Sorocaba - 2021
 
 
 ## Compilação
-`$ make` -- o arquivo executável será compilado no diretório bin/ 
-    ou
+`$ make` -- o arquivo executável será compilado no diretório bin/  
+    ou  
 `mkdir bin && cc -Iinclude -o bin/ex07 src/*.c`
 
 ## Execução
